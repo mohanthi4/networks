@@ -27,14 +27,8 @@ const filePaths = {
 
 export const requestHandler = async (request) => {
   const path = filePaths[request.path];
-  switch (request.path) {
-    case "/":
-      return await createResponse(path, "200", "text/html");
-    case "/lang_wikipedia.html":
-      return await createResponse(path, "200", "text/html");
-    case "/lang_html.html":
-      return await createResponse(path, "200", "text/html");
-    default:
-      return await createResponse("./data/not-found.html", "404", "text/html");
+  if (path) {
+    return await createResponse(path, "200", "text/html");
   }
+  return await createResponse("./data/not-found.html", "404", "text/html");
 };
