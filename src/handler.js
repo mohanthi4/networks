@@ -3,24 +3,18 @@ const createResponseContent = async (path) => {
   return `${content}`;
 };
 
-const createSuccessResponse = async (path) => {
-  const content = await createResponseContent(path);
-  const response = {
-    statusCode: "200",
-    statusDesc: "OK",
-    content,
-    header: { "Content-Length": content.length, "Content-type": "text/html" },
-  };
-  return response;
+const desc = {
+  "200": "OK",
+  "404": "FILE NOT FOUND",
 };
 
-const createFailureResponse = async () => {
-  const content = await createResponseContent("./data/not-found.html");
+const createResponse = async (path, statusCode, contentType) => {
+  const content = await createResponseContent(path);
   const response = {
-    statusCode: "404",
-    statusDesc: "FILE NOT FOUND",
+    statusCode,
+    statusDesc: desc[statusCode],
     content,
-    header: { "Content-Length": content.length, "Content-type": "text/html" },
+    header: { "Content-Length": content.length, "Content-type": contentType },
   };
   return response;
 };
@@ -35,12 +29,12 @@ export const requestHandler = async (request) => {
   const path = filePaths[request.path];
   switch (request.path) {
     case "/":
-      return await createSuccessResponse(path);
+      return await createResponse(path, "200", "text/html");
     case "/lang_wikipedia.html":
-      return await createSuccessResponse(path);
+      return await createResponse(path, "200", "text/html");
     case "/lang_html.html":
-      return await createSuccessResponse(path);
+      return await createResponse(path, "200", "text/html");
     default:
-      return await createFailureResponse();
+      return await createResponse("./data/not-found.html", "404", "text/html");
   }
 };
