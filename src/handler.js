@@ -1,7 +1,5 @@
-const createResponseContent = async (path) => {
-  const content = await Deno.readTextFile(path);
-  return `${content}`;
-};
+const readFile = async (path) =>
+  await Deno.readTextFile(path);
 
 const desc = {
   "200": "OK",
@@ -9,7 +7,7 @@ const desc = {
 };
 
 const createResponse = async (path, statusCode, contentType) => {
-  const content = await createResponseContent(path);
+  const content = await readFile(path);
   const response = {
     statusCode,
     statusDesc: desc[statusCode],
