@@ -26,9 +26,7 @@ const filePaths = {
 };
 
 export const requestHandler = async (request) => {
-  const path = filePaths[request.path];
-  if (path) {
-    return await createResponse(path, "200", "text/html");
-  }
-  return await createResponse("./data/not-found.html", "404", "text/html");
+  const path = filePaths[request.path] || "./data/not-found.html";
+  const statusCode = filePaths[request.path] ? "200" : "404";
+  return await createResponse(path, statusCode, "text/html");
 };
